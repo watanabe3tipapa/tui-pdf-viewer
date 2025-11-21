@@ -1,4 +1,5 @@
 import sys
+import os
 from textual.app import App, ComposeResult
 from textual.widgets import Header, Footer
 from textual.containers import Container
@@ -6,6 +7,7 @@ from textual.binding import Binding
 from tui_pdf_viewer.widgets.pdf_viewer import PDFViewer
 from tui_pdf_viewer.widgets.goto_page_modal import GotoPageModal
 from tui_pdf_viewer.widgets.help_screen import HelpScreen
+from tui_pdf_viewer.widgets.open_file_modal import OpenFileModal
 from tui_pdf_viewer.utils.pdf_handler import PDFHandler
 
 class PDFViewerApp(App):
@@ -26,6 +28,7 @@ class PDFViewerApp(App):
         Binding("n", "next_page", "Next Page"),
         Binding("p", "prev_page", "Previous Page"),
         Binding("g", "goto_page", "Go to Page"),
+        Binding("o", "open_file", "Open File"),
         Binding("?", "help", "Help"),
     ]
 
@@ -41,9 +44,17 @@ class PDFViewerApp(App):
         yield Footer()
 
     def on_mount(self) -> None:
+        self.load_pdf(self.file_path)
+
+    def load_pdf(self, path: str) -> None:
         try:
+            if self.pdf_handler:
+                self.pdf_handler.close()
+            
+            self.file_path = path
             self.pdf_handler = PDFHandler(self.file_path)
             self.load_page(0)
+            self.title = f"TUI PDF Viewer - {path}"
         except Exception as e:
             self.notify(f"Error loading PDF: {e}", severity="error")
 
@@ -75,6 +86,13 @@ class PDFViewerApp(App):
                 self.load_page(page_num - 1)
         
         self.push_screen(GotoPageModal(), check_page)
+
+    def action_open_file(self) -> None:
+        def check_file(file_path: str | None) -> None:
+            if file_path:
+                self.load_pdf(file_path)
+        
+        self.push_screen(OpenFileModal(initial_path=os.path.dirname(self.file_path) or "."), check_file)
 
     def action_help(self) -> None:
         self.push_screen(HelpScreen())
