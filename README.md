@@ -5,7 +5,7 @@
 
 ---
 
-TextualとPyMuPDFを使用して構築された、ターミナルで動作するPDFビューアーです。
+TextualとPyMuPDFを使用して構築した、ターミナル上で動作するPDFビューアーです。
 
 ![PDFViewerApp](./assets/PDFViewerApp.svg)
 
