@@ -14,3 +14,5 @@ class PDFViewer(Static):
 
     def watch_text_content(self, new_text: str) -> None:
         self.update(new_text)
+
+

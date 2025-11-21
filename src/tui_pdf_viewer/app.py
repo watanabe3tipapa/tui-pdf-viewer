@@ -4,6 +4,8 @@ from textual.widgets import Header, Footer
 from textual.containers import Container
 from textual.binding import Binding
 from tui_pdf_viewer.widgets.pdf_viewer import PDFViewer
+from tui_pdf_viewer.widgets.goto_page_modal import GotoPageModal
+from tui_pdf_viewer.widgets.help_screen import HelpScreen
 from tui_pdf_viewer.utils.pdf_handler import PDFHandler
 
 class PDFViewerApp(App):
@@ -14,6 +16,7 @@ class PDFViewerApp(App):
         height: 1fr;
         border: solid green;
         padding: 1;
+        overflow-y: auto;
     }
     """
 
@@ -22,6 +25,8 @@ class PDFViewerApp(App):
         Binding("q", "quit", "Quit"),
         Binding("n", "next_page", "Next Page"),
         Binding("p", "prev_page", "Previous Page"),
+        Binding("g", "goto_page", "Go to Page"),
+        Binding("?", "help", "Help"),
     ]
 
     def __init__(self, file_path: str):
@@ -47,7 +52,10 @@ class PDFViewerApp(App):
             total_pages = self.pdf_handler.get_page_count()
             if 0 <= page_num < total_pages:
                 text = self.pdf_handler.get_page_text(page_num)
-                self.query_one("#pdf_viewer", PDFViewer).text_content = text
+                viewer = self.query_one("#pdf_viewer", PDFViewer)
+                viewer.text_content = text
+                # Reset scroll position
+                viewer.scroll_home(animate=False)
                 self.current_page = page_num
                 self.sub_title = f"Page {page_num + 1} of {total_pages}"
 
@@ -59,6 +67,17 @@ class PDFViewerApp(App):
 
     def action_toggle_dark(self) -> None:
         self.dark = not self.dark
+
+    def action_goto_page(self) -> None:
+        def check_page(page_num: int | None) -> None:
+            if page_num is not None:
+                # User input is 1-based, convert to 0-based
+                self.load_page(page_num - 1)
+        
+        self.push_screen(GotoPageModal(), check_page)
+
+    def action_help(self) -> None:
+        self.push_screen(HelpScreen())
 
 def main():
     if len(sys.argv) < 2:
