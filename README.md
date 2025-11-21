@@ -6,7 +6,8 @@
 ---
 
 TextualとPyMuPDFを使用して構築された、ターミナルで動作するPDFビューアーです。
-`tui-md-viewer` のPDF版として開発しました。
+
+![PDFViewerApp](./assets/PDFViewerApp.svg)
 
 ## 特徴
 - **テキスト表示**: PDFのテキストコンテンツを抽出してターミナル上で閲覧できます。
