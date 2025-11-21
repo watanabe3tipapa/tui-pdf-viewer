@@ -1,5 +1,10 @@
 # TUI PDF Viewer
 
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Version](https://img.shields.io/badge/version-0.1.0-green.svg)
+
+---
+
 TextualとPyMuPDFを使用して構築された、ターミナルで動作するPDFビューアーです。
 `tui-md-viewer` のPDF版として開発しました。
 
