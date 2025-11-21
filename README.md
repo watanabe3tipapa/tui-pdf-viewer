@@ -1,7 +1,7 @@
 # TUI PDF Viewer
 
 TextualとPyMuPDFを使用して構築された、ターミナルで動作するPDFビューアーです。
-`tui-md-viewer` のPDF版として開発されました。
+`tui-md-viewer` のPDF版として開発しました。
 
 ## 特徴
 - **テキスト表示**: PDFのテキストコンテンツを抽出してターミナル上で閲覧できます。
@@ -44,7 +44,12 @@ uv run -m tui_pdf_viewer.app sample.pdf
 | `d` | ダークモードの切り替え |
 | `q` | アプリケーションを終了 |
 
+
+---
+
 ## ライセンス
 
-このプロジェクトは [MIT License](LICENSE) の下で公開されています。
+このプロジェクトは [MIT License](LICENSE) の下で公開しています。
 
+
+---
